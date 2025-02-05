@@ -13,6 +13,7 @@
             Console.WriteLine($"Press enter to continue");
             Console.ReadKey();
             Console.Clear();
+            user01.StartGame();
         }
 
         public static string ChooseSpell()
