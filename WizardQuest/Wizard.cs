@@ -20,6 +20,7 @@ namespace WizardQuest
         int HPUP = 2;
         int Stage = 0;
         bool IsUserDead = false;
+        int UpgradePoints = 0;
         
 
         public Wizard(string wizardName, string spellName)
@@ -47,6 +48,7 @@ namespace WizardQuest
 
         private void Adventure()
         {
+            Console.Clear();
             Console.WriteLine("You're running towards the castle...");
             Thread.Sleep(1500);
             Stage++;
@@ -61,6 +63,7 @@ namespace WizardQuest
             }
             else
             {
+                UpgradeSkill(); 
                 Adventure();
             }
         }
@@ -116,9 +119,13 @@ namespace WizardQuest
         {
             isEntityDead = entity.TakeDamage(CombatPower);
             Console.WriteLine($"You casted your {Spell} and did {CombatPower} damage!");
+            Thread.Sleep(1500);
             if (isEntityDead)
             {
                 Console.WriteLine($"This attack was brutal and killed the entity!\nCongrats on clearing stage {Stage}!");
+                Thread.Sleep(1000);
+                Console.WriteLine("Press enter to continue your adventure");
+                Console.ReadKey();
             }
             else
             {
@@ -144,6 +151,55 @@ namespace WizardQuest
                 Console.WriteLine("This attack was too much for you to handle! You died :c");
                 IsUserDead = true;
             }
+        }
+
+        private void UpgradeSkill()
+        {
+            UpgradePoints++;
+            while (UpgradePoints > 0)
+            {
+                Console.WriteLine($"You have {UpgradePoints} upgrade point(s)! What do you want to upgrade?");
+                Console.WriteLine($"1. Increase Combat Power => +5 CP (Current = {CombatPower}CP)");
+                Console.WriteLine($"2. Increase Max Health Points => +5 HP (Current = {maxHP}HP, does NOT heal you!)");
+                Console.WriteLine($"3. Increase Heal-Up => +3HP (Current = {HPUP}HP, does NOT heal you!)");
+                Console.WriteLine($"4. Heal {maxHP - HitPoints}HP to max health");
+                Console.WriteLine("5. Hold the upgrade point(s)");
+                int choice;
+                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 4)
+                {
+                    Console.WriteLine("Bad choice, try again!");
+                }
+                switch (choice)
+                {
+                    case 1:
+                        CombatPower += 5;
+                        Console.WriteLine("Your CP has been increased by 5!");
+                        break;
+                    case 2:
+                        maxHP += 5;
+                        Console.WriteLine("Your HP has been increased by 5!");
+                        break;
+                    case 3:
+                        HPUP += 3;
+                        Console.WriteLine("Your Heal-UP has been increased by 3!");
+                        break;
+                    case 4:
+                        HitPoints = maxHP;
+                        Console.WriteLine("You're at full health again!");
+                        break;
+                    case 5:
+                        Console.WriteLine("You're holding your upgrade point(s)!");
+                        Thread.Sleep(2000);
+                        break;
+                }
+                if (choice != 5)
+                {
+                    UpgradePoints--;
+                }
+                Console.WriteLine("Press enter to continue");
+                Console.ReadKey();
+            }
+            
         }
 
 
