@@ -61,6 +61,16 @@ namespace WizardQuest
             {
                 Console.WriteLine($"You died while on the search to the book of spells. You reached stage {Stage}");
             }
+            else if(Stage == 10)
+            {
+                Console.WriteLine($"You killed the last entity...");
+                Thread.Sleep(1000);
+                Console.WriteLine("You enter the Castle of Doom and found the book of spells...");
+                Thread.Sleep(1000);
+                Console.WriteLine("Congratulations on completing the game!\nPress enter to end the game");
+                Console.ReadKey();
+
+            }
             else
             {
                 UpgradeSkill(); 
@@ -156,7 +166,8 @@ namespace WizardQuest
         private void UpgradeSkill()
         {
             UpgradePoints++;
-            while (UpgradePoints > 0)
+            bool hold = false;
+            while (UpgradePoints > 0 && !hold)
             {
                 Console.WriteLine($"You have {UpgradePoints} upgrade point(s)! What do you want to upgrade?");
                 Console.WriteLine($"1. Increase Combat Power => +5 CP (Current = {CombatPower}CP)");
@@ -165,7 +176,7 @@ namespace WizardQuest
                 Console.WriteLine($"4. Heal {maxHP - HitPoints}HP to max health");
                 Console.WriteLine("5. Hold the upgrade point(s)");
                 int choice;
-                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 4)
+                while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 5)
                 {
                     Console.WriteLine("Bad choice, try again!");
                 }
@@ -189,6 +200,7 @@ namespace WizardQuest
                         break;
                     case 5:
                         Console.WriteLine("You're holding your upgrade point(s)!");
+                        hold = true;
                         Thread.Sleep(2000);
                         break;
                 }
