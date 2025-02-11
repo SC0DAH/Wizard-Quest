@@ -59,13 +59,17 @@ namespace WizardQuest
             bool result = StageStart();
             if (result)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"You died while on the search to the book of spells. You reached stage {Stage}");
+                Console.ResetColor();
             }
             else if(Stage == 10)
             {
                 Console.WriteLine($"You killed the last entity...");
                 Thread.Sleep(1000);
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("You enter the Castle of Doom and found the book of spells...");
+                Console.ResetColor();
                 Thread.Sleep(1000);
                 Console.WriteLine("Congratulations on completing the game!\nPress enter to end the game");
                 Console.ReadKey();
@@ -82,7 +86,10 @@ namespace WizardQuest
         {
             while (true) // stage will continue until user or entity is dead
             {
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine($"It's your turn {Name}! You have {HitPoints}HP and {CombatPower}CP");
+                Console.ResetColor();
+                Thread.Sleep(700);
                 UserTurn();
                 if (isEntityDead)
                 {
@@ -90,6 +97,7 @@ namespace WizardQuest
                 }
                 Console.WriteLine("It's the entity's turn now!");
                 EntityTurn();
+                Thread.Sleep(700);
                 if (IsUserDead)
                 {
                     break;
@@ -100,15 +108,17 @@ namespace WizardQuest
 
         private void UserTurn()
         {
-            Console.WriteLine($"Choose what you want to do:\n1. Fight the entity ({CombatPower} damage)");
+            Console.WriteLine($"Choose what you want to do:\n1. Fight the entity ({CombatPower} damage) ⚔️");
             if (HitPoints < maxHP) // only available when user is not at full health
             {
-                Console.WriteLine($"2. Heal up ({HPUP}HP)");
+                Console.WriteLine($"2. Heal up ({HPUP}HP) 🆙");
             }
             int choice;
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 2)
             {
-                    Console.WriteLine("Bad choice, try again!");    
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Bad choice, try again!");
+                Console.ResetColor();
             }
             if (choice == 1)
             {
@@ -128,7 +138,9 @@ namespace WizardQuest
         private void DoDamage()
         {
             isEntityDead = entity.TakeDamage(CombatPower);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"You casted your {Spell} and did {CombatPower} damage!");
+            Console.ResetColor();
             Thread.Sleep(1500);
             if (isEntityDead)
             {
@@ -139,7 +151,12 @@ namespace WizardQuest
             }
             else
             {
-                Console.WriteLine($"The entity has {entity.HP}HP remaining.");
+                Console.Write($"The entity has");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write($" {entity.HP}HP ");
+                Console.ResetColor();
+                Console.Write("remaining.");
+                Console.WriteLine();
             }
         }
 
@@ -155,12 +172,17 @@ namespace WizardQuest
             Random random = new Random();
             int index = random.Next(0, attacks.Length);
             HitPoints = Math.Max(0, HitPoints - entity.CP);
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"The entity decided to {attacks[index]} you, dealing {entity.CP} damage!");
+            Thread.Sleep(1000);
             if (HitPoints == 0)
             {
+                Console.WriteLine("💀💀💀");
                 Console.WriteLine("This attack was too much for you to handle! You died :c");
+                Console.WriteLine("💀💀💀");
                 IsUserDead = true;
             }
+            Console.ResetColor();
         }
 
         private void UpgradeSkill()
@@ -169,12 +191,14 @@ namespace WizardQuest
             bool hold = false;
             while (UpgradePoints > 0 && !hold)
             {
+                Console.WriteLine("------------------------------------------------------------------------");
                 Console.WriteLine($"You have {UpgradePoints} upgrade point(s)! What do you want to upgrade?");
-                Console.WriteLine($"1. Increase Combat Power => +5 CP (Current = {CombatPower}CP)");
-                Console.WriteLine($"2. Increase Max Health Points => +5 HP (Current = {maxHP}HP, does NOT heal you!)");
-                Console.WriteLine($"3. Increase Heal-Up => +3HP (Current = {HPUP}HP, does NOT heal you!)");
-                Console.WriteLine($"4. Heal {maxHP - HitPoints}HP to max health");
-                Console.WriteLine("5. Hold the upgrade point(s)");
+                Console.WriteLine($"⚔️ 1. Increase Combat Power => +5 CP (Current = {CombatPower}CP) ⚔️");
+                Console.WriteLine($"📈 2. Increase Max Health Points => +5 HP (Current = {maxHP}HP, does NOT heal you!) 📈");
+                Console.WriteLine($"🆙 3. Increase Heal-Up => +3HP (Current = {HPUP}HP, does NOT heal you!) 🆙");
+                Console.WriteLine($"➕ 4. Heal {maxHP - HitPoints}HP to max health ➕");
+                Console.WriteLine("✋ 5. Hold the upgrade point(s) ✋");
+                Console.WriteLine("------------------------------------------------------------------------");
                 int choice;
                 while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 5)
                 {
@@ -184,22 +208,22 @@ namespace WizardQuest
                 {
                     case 1:
                         CombatPower += 5;
-                        Console.WriteLine("Your CP has been increased by 5!");
+                        Console.WriteLine("⚔️ Your CP has been increased by 5! ⚔️");
                         break;
                     case 2:
                         maxHP += 5;
-                        Console.WriteLine("Your HP has been increased by 5!");
+                        Console.WriteLine("📈 Your HP has been increased by 5! 📈");
                         break;
                     case 3:
                         HPUP += 3;
-                        Console.WriteLine("Your Heal-UP has been increased by 3!");
+                        Console.WriteLine("🆙 Your Heal-UP has been increased by 3! 🆙");
                         break;
                     case 4:
                         HitPoints = maxHP;
-                        Console.WriteLine("You're at full health again!");
+                        Console.WriteLine("➕ You're at full health again! ➕");
                         break;
                     case 5:
-                        Console.WriteLine("You're holding your upgrade point(s)!");
+                        Console.WriteLine("✋ You're holding your upgrade point(s)! ✋");
                         hold = true;
                         Thread.Sleep(2000);
                         break;

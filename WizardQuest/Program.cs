@@ -4,6 +4,7 @@
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Welcome Wizard! What do you want to name yourself?");
             string name = Console.ReadLine();
             Console.WriteLine("Choose a spell to cast during battle!");
