@@ -17,7 +17,7 @@ namespace WizardQuest
         int CombatPower = 5;
         int HitPoints = 10;
         int maxHP = 10;
-        int HPUP = 2;
+        int HPUP = 3;
         int Stage = 0;
         bool IsUserDead = false;
         int UpgradePoints = 0;
@@ -187,14 +187,15 @@ namespace WizardQuest
 
         private void UpgradeSkill()
         {
+            Console.Clear();
             UpgradePoints++;
             bool hold = false;
             while (UpgradePoints > 0 && !hold)
             {
-                Console.WriteLine("------------------------------------------------------------------------");
                 Console.WriteLine($"You have {UpgradePoints} upgrade point(s)! What do you want to upgrade?");
-                Console.WriteLine($"⚔️ 1. Increase Combat Power => +5 CP (Current = {CombatPower}CP) ⚔️");
-                Console.WriteLine($"📈 2. Increase Max Health Points => +5 HP (Current = {maxHP}HP, does NOT heal you!) 📈");
+                Console.WriteLine("------------------------------------------------------------------------");
+                Console.WriteLine($"⚔️ 1. Increase Combat Power => +2 CP (Current = {CombatPower}CP) ⚔️");
+                Console.WriteLine($"📈 2. Increase Max Health Points => +4 HP (Current = {maxHP}HP, does NOT heal you!) 📈");
                 Console.WriteLine($"🆙 3. Increase Heal-Up => +3HP (Current = {HPUP}HP, does NOT heal you!) 🆙");
                 Console.WriteLine($"➕ 4. Heal {maxHP - HitPoints}HP to max health ➕");
                 Console.WriteLine("✋ 5. Hold the upgrade point(s) ✋");
@@ -207,12 +208,12 @@ namespace WizardQuest
                 switch (choice)
                 {
                     case 1:
-                        CombatPower += 5;
-                        Console.WriteLine("⚔️ Your CP has been increased by 5! ⚔️");
+                        CombatPower += 2;
+                        Console.WriteLine("⚔️ Your CP has been increased by 2! ⚔️");
                         break;
                     case 2:
-                        maxHP += 5;
-                        Console.WriteLine("📈 Your HP has been increased by 5! 📈");
+                        maxHP += 4;
+                        Console.WriteLine("📈 Your HP has been increased by 4! 📈");
                         break;
                     case 3:
                         HPUP += 3;
